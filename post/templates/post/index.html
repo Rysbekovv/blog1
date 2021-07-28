@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+<section class="bg-text-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg-text">
+                    <h3>Создатели бренда </h3>
+                    <p> Создатели бренда Nike познакомились в 1957 году в Университете штата Орегон. Билл Бауэрман — тренер по легкой атлетике,
+                         и первокурсник Фил Найт — бегун на среднюю дистанцию. Двое мужчин, страстно любящих спорт, сразу же нашли общий язык. 
+                         Билл Бауэрман воспитал множество олимпийских чемпионов из числа студентов университета, уделяя большое внимание их всестороннему развитию, 
+                         а не только физическим тренировкам. В 1972 году его пригласили занять пост тренера олимпийской команды США по легкой атлетике. 
+                         После смерти великого коуча удостоили собственным бюстом в Национальном зале славы.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="blog-post-area">
+    <div class="container">
+        <div class="row">
+            <div class="blog-post-area-style">
+                <div class="col-md-12">
+                    <div class="single-post-big">
+                        <div class="big-image">
+                            <img src="{% static 'img/post-image1.jpg' %}" alt="">
+                        </div>
+                        <div class="big-text">
+                            <h3><a href="#">История adidas </a></h3>
+                            <p>adidas — производитель спортивной одежды и обуви, основанный в 1949 году в Германии. 
+                                «Бренд с тремя полосками» является одной из крупнейших спортивных компаний в истории. 
+                                Гений инноваций, легенда теннисных кортов и всевозможных кроссовок, adidas оказал огромное 
+                                влияние на индустрию спортивных товаров, моду, культуру и музыку. Об увлекательной истории 
+                                культового бренда рассказывает Сникер Энциклопедия сети магазинов Street Beat.</p>
+                            <p> Адольф и Рудольф
+                                Шел 1898 год. В семье обувщика и прачки по фамилии Дасслер рождается третий ребенок — мальчик по имени Рудольф. 
+                                Через два года семейство вновь готовится к пополнению. 3 ноября 1900 года на свет появляется Адольф Дасслер. 
+                                Именно братья Дасслеры в дальнейшем станут основателями великих спортивных компаний adidas и PUMA, а до того, 
+                                как их дороги разойдутся по сторонам — откроют обувное производство, которое в будущем станет основой для их 
+                                предпринимательских успехов. </p>
+                            <h4><span class="date">21 july 2021</span><span class="author">Posted By: <span
+                                    class="author-name">Rysbekov Aiman</span></span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+                {% for post in posts %}
+                <div class="col-md-3">
+                    <div class="single-post">
+
+                        {% if post.photo %}
+                   r     <img src="{{ post.photo.url }}" alt="{{ post.title }}">
+                        {% else %}
+                        <img src="https://picsum.photos/id/1060/300/201/?blur=2" alt="{{ post.title }}">
+                        {% endif %}
+
+                        <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                        <h4><span>Posted By: <span class="author-name">{{ post.author }}</span></span>
+                        </h4>
+                        {{ post.content|truncatewords_html:20|safe }}
+                        <h4><span>{{ post.created_at|date:"d.m.Y" }}</span></h4>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pegination">
+        <div class="nav-links">
+
+            {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                <span class="page-numbers current">{{ p }}</span>
+                {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                <a class="page-numbers" href="?page={{ p }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a class="page-numbers" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}
